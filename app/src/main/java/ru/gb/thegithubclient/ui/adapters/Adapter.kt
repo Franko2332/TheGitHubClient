@@ -1,10 +1,9 @@
 package ru.gb.thegithubclient.ui.adapters
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ru.gb.thegithubclient.domain.pojo.BindableModel
+import ru.gb.thegithubclient.data.pojo.BindableModel
 
 class Adapter <T: EntityHolder>: RecyclerView.Adapter<T>() {
     private val data = mutableListOf<BindableModel>()
@@ -17,13 +16,9 @@ class Adapter <T: EntityHolder>: RecyclerView.Adapter<T>() {
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): T {
-       return GitHubUsersHolder(parent, viewTypeToLayoutId[viewType]!!) as T
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): T = GitHubUsersHolder(parent, viewTypeToLayoutId[viewType]!!) as T
 
-    override fun onBindViewHolder(holder: T, position: Int) {
-        holder.bind(data[position])
-    }
+    override fun onBindViewHolder(holder: T, position: Int) = holder.bind(data[position])
 
     override fun getItemViewType(position: Int): Int {
         val item = data[position]

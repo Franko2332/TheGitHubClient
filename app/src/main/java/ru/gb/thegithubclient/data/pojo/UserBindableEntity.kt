@@ -1,4 +1,4 @@
-package ru.gb.thegithubclient.domain.pojo
+package ru.gb.thegithubclient.data.pojo
 
 import ru.gb.thegithubclient.R
 

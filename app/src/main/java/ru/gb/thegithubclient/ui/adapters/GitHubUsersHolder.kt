@@ -7,8 +7,8 @@ import android.widget.TextView
 
 import com.squareup.picasso.Picasso
 import ru.gb.thegithubclient.R
-import ru.gb.thegithubclient.domain.pojo.BindableModel
-import ru.gb.thegithubclient.domain.pojo.UserEntity
+import ru.gb.thegithubclient.data.pojo.BindableModel
+import ru.gb.thegithubclient.data.pojo.UserEntity
 
 class GitHubUsersHolder(parent: ViewGroup, layoutRes: Int): EntityHolder(parent, layoutRes) {
     override fun bind(entity: BindableModel) {
