@@ -1,14 +1,15 @@
 package ru.gb.thegithubclient.ui.adapters
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ru.gb.thegithubclient.domain.pojo.BindableModel
+import ru.gb.thegithubclient.data.pojo.BindableModel
+import ru.gb.thegithubclient.data.pojo.UserEntity
 
 class Adapter <T: EntityHolder>: RecyclerView.Adapter<T>() {
     private val data = mutableListOf<BindableModel>()
     private var viewTypeToLayoutId :MutableMap<Int, Int> = mutableMapOf()
+    private var listener: OnItemClickListener? = null
 
     @SuppressLint("NotifyDataSetChanged")
     fun setData(_data: List<BindableModel>){
@@ -17,12 +18,15 @@ class Adapter <T: EntityHolder>: RecyclerView.Adapter<T>() {
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): T {
-       return GitHubUsersHolder(parent, viewTypeToLayoutId[viewType]!!) as T
+    fun setOnclickListener(listener: OnItemClickListener){
+        this.listener = listener
     }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): T = GitHubUsersHolder(parent, viewTypeToLayoutId[viewType]!!) as T
 
     override fun onBindViewHolder(holder: T, position: Int) {
         holder.bind(data[position])
+        listener?.let { holder.setOnItemClickListener(it) }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -34,4 +38,8 @@ class Adapter <T: EntityHolder>: RecyclerView.Adapter<T>() {
     }
 
     override fun getItemCount(): Int = data.size
+
+    interface OnItemClickListener{
+        fun onClick(userEntity: UserEntity)
+    }
 }
