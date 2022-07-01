@@ -2,12 +2,16 @@ package ru.gb.thegithubclient.ui.users
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.coroutineScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.gb.thegithubclient.data.RepoImpl
+import ru.gb.thegithubclient.data.UsersAppState
+import ru.gb.thegithubclient.data.UsersAppState.*
 import ru.gb.thegithubclient.databinding.ActivityMainBinding
 import ru.gb.thegithubclient.data.pojo.BindableModel
 import ru.gb.thegithubclient.data.pojo.UserEntity
@@ -16,7 +20,8 @@ import ru.gb.thegithubclient.ui.adapters.GitHubUsersHolder
 
 class MainActivity : AppCompatActivity(), UsersContract.View, Adapter.OnItemClickListener {
     private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private lateinit var presenter: UsersContract.Presenter
+    private lateinit var viewModel: UsersViewModel
+    private val observer: Observer<UsersAppState> by lazy { Observer<UsersAppState> { render(it) } }
 
     companion object {
         private const val USER_ENTITY = "USER_ENTITY"
@@ -25,33 +30,33 @@ class MainActivity : AppCompatActivity(), UsersContract.View, Adapter.OnItemClic
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        presenter = extractPresenter()
-        presenter.attach(this)
+        viewModel = extractViewModel()
         init()
     }
 
-    private fun extractPresenter(): UsersContract.Presenter =
-        lastCustomNonConfigurationInstance as? UsersContract.Presenter
-            ?: UsersPresenter(RepoImpl())
-
-    override fun onDestroy() {
-        presenter.detach()
-        super.onDestroy()
-    }
+    private fun extractViewModel(): UsersViewModel =
+        lastCustomNonConfigurationInstance as? UsersViewModel
+            ?: UsersViewModel(RepoImpl())
 
     private fun init() {
-        showProgress(true)
         lifecycle.coroutineScope.launchWhenStarted {
-            presenter.loadData()
+            viewModel.getUsersData().observe(this@MainActivity, observer)
         }
 
     }
 
-    override fun onRetainCustomNonConfigurationInstance(): UsersContract.Presenter? {
-        return presenter
+    override fun onRetainCustomNonConfigurationInstance(): UsersViewModel? {
+        return this.viewModel
+    }
+
+    private fun render(appState: UsersAppState) = when (appState) {
+        is Loading -> showProgress(true)
+        is Success -> showUsers(appState.data)
+        is Error -> showError(appState.error)
     }
 
     override fun showUsers(data: List<BindableModel>) {
+        showProgress(false)
         binding.usersRecyclerView.apply {
             adapter = Adapter<GitHubUsersHolder>().apply {
                 setData(data)
