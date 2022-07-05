@@ -1,4 +1,4 @@
-package ru.gb.thegithubclient.data.pojo
+package ru.gb.thegithubclient.ui
 
 import androidx.annotation.LayoutRes
 

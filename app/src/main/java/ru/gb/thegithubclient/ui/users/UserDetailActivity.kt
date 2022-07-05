@@ -3,7 +3,7 @@ package ru.gb.thegithubclient.ui.users
 import android.app.Activity
 import android.os.Bundle
 import com.squareup.picasso.Picasso
-import ru.gb.thegithubclient.data.pojo.UserEntity
+import ru.gb.thegithubclient.domain.entity.UserEntity
 import ru.gb.thegithubclient.databinding.ActivityUserDetailBinding
 
 class UserDetailActivity: Activity() {

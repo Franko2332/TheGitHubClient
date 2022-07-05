@@ -1,6 +1,6 @@
-package ru.gb.thegithubclient.data
+package ru.gb.thegithubclient.domain.appstate
 
-import ru.gb.thegithubclient.data.pojo.UserBindableEntity
+import ru.gb.thegithubclient.ui.users.UserBindableEntity
 
 sealed class UsersAppState {
      object Loading: UsersAppState()

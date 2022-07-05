@@ -1,4 +1,4 @@
-package ru.gb.thegithubclient.ui.adapters
+package ru.gb.thegithubclient.ui.users
 
 
 import android.view.ViewGroup
@@ -8,8 +8,10 @@ import androidx.cardview.widget.CardView
 
 import com.squareup.picasso.Picasso
 import ru.gb.thegithubclient.R
-import ru.gb.thegithubclient.data.pojo.BindableModel
-import ru.gb.thegithubclient.data.pojo.UserEntity
+import ru.gb.thegithubclient.ui.BindableModel
+import ru.gb.thegithubclient.domain.entity.UserEntity
+import ru.gb.thegithubclient.ui.Adapter
+import ru.gb.thegithubclient.ui.EntityHolder
 
 class GitHubUsersHolder(parent: ViewGroup, layoutRes: Int) : EntityHolder(parent, layoutRes) {
     var data: UserEntity? = null
