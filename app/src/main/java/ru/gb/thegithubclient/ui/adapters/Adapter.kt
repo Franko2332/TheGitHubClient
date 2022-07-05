@@ -3,8 +3,9 @@ package ru.gb.thegithubclient.ui.adapters
 import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ru.gb.thegithubclient.data.pojo.BindableModel
-import ru.gb.thegithubclient.data.pojo.UserEntity
+import ru.gb.thegithubclient.ui.BindableModel
+import ru.gb.thegithubclient.domain.entity.UserEntity
+import ru.gb.thegithubclient.ui.users.GitHubUsersHolder
 
 class Adapter <T: EntityHolder>: RecyclerView.Adapter<T>() {
     private val data = mutableListOf<BindableModel>()

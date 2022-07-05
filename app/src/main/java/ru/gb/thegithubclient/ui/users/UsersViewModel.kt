@@ -2,27 +2,27 @@ package ru.gb.thegithubclient.ui.users
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import ru.gb.thegithubclient.data.RepoImpl
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.kotlin.subscribeBy
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.Subject
 import ru.gb.thegithubclient.data.UsersAppState
-import ru.gb.thegithubclient.data.pojo.BindableModel
-import ru.gb.thegithubclient.data.pojo.UserBindableEntity
-import ru.gb.thegithubclient.data.pojo.UserEntity
+import ru.gb.thegithubclient.domain.entity.UserEntity
 import ru.gb.thegithubclient.domain.repo.Repo
 import java.lang.IllegalStateException
 
 class UsersViewModel(private var repo: Repo) {
-    private val usersData: LiveData<UsersAppState> = MutableLiveData<UsersAppState>()
+    private val usersData: Observable<UsersAppState> = BehaviorSubject.create()
 
-    suspend fun getUsersData(): LiveData<UsersAppState> {
-        usersData.mutable().postValue(UsersAppState.Loading)
-        try {
-            val usersEntity = repo.getUsersData()
-            usersData.mutable().postValue(UsersAppState.Success(bindData(usersEntity)))
-        } catch (e: Throwable){
-            usersData.mutable().postValue(UsersAppState.Error(e))
-        }
+    fun getUsersData(): Observable<UsersAppState> {
+        usersData.subject().onNext(UsersAppState.Loading)
+        repo.getObservableUsersData().subscribeBy(
+            onError = { usersData.subject().onNext(UsersAppState.Error(it)) },
+            onSuccess = { usersData.subject().onNext(UsersAppState.Success(bindData(it))) })
         return usersData
     }
+
 
     private fun bindData(usersEntity: List<UserEntity>): MutableList<UserBindableEntity> {
         val data = mutableListOf<UserBindableEntity>()
@@ -34,4 +34,7 @@ class UsersViewModel(private var repo: Repo) {
 
     private fun <T> LiveData<T>.mutable(): MutableLiveData<T> = this as? MutableLiveData<T>
         ?: throw IllegalStateException("It is not mutableLiveData")
+
+    private fun <T> Observable<T>.subject(): Subject<T> = this as? Subject<T>
+        ?: throw IllegalStateException("It is not Subject")
 }

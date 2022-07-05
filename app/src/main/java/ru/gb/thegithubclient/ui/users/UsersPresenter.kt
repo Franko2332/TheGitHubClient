@@ -1,9 +1,7 @@
 package ru.gb.thegithubclient.ui.users
 
-import ru.gb.thegithubclient.data.pojo.BindableModel
-import ru.gb.thegithubclient.data.pojo.UserBindableEntity
+import ru.gb.thegithubclient.ui.BindableModel
 import ru.gb.thegithubclient.domain.repo.Repo
-import java.lang.IllegalStateException
 
 class UsersPresenter(private val repo: Repo) : UsersContract.Presenter {
     private var view: UsersContract.View? = null
@@ -17,14 +15,14 @@ class UsersPresenter(private val repo: Repo) : UsersContract.Presenter {
 
     override suspend fun loadData() {
         try {
-            view?.showProgress(true)
+            view?.showProgress()
             val users = repo.getUsersData()
             val data = mutableListOf<BindableModel>()
             users.forEach {
                 data.add(UserBindableEntity(it))
             }
             view?.showUsers(data)
-            view?.showProgress(false)
+            view?.hideProgress()
         } catch (e: Throwable) {
             view?.showError(e)
         }
