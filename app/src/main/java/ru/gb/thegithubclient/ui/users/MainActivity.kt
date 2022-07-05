@@ -1,5 +1,6 @@
 package ru.gb.thegithubclient.ui.users
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -8,13 +9,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
-import ru.gb.thegithubclient.data.RetrofitRepoImpl
-import ru.gb.thegithubclient.data.UsersAppState
-import ru.gb.thegithubclient.data.UsersAppState.*
+import ru.gb.thegithubclient.app
+import ru.gb.thegithubclient.data.concreterepo.RetrofitRepoImpl
+import ru.gb.thegithubclient.domain.appstate.UsersAppState
+import ru.gb.thegithubclient.domain.appstate.UsersAppState.*
 import ru.gb.thegithubclient.databinding.ActivityMainBinding
 import ru.gb.thegithubclient.ui.BindableModel
 import ru.gb.thegithubclient.domain.entity.UserEntity
-import ru.gb.thegithubclient.ui.adapters.Adapter
+import ru.gb.thegithubclient.ui.Adapter
 
 class MainActivity : AppCompatActivity(), UsersContract.View, Adapter.OnItemClickListener {
     private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
@@ -39,7 +41,7 @@ class MainActivity : AppCompatActivity(), UsersContract.View, Adapter.OnItemClic
 
     private fun extractViewModel(): UsersViewModel =
         lastCustomNonConfigurationInstance as? UsersViewModel
-            ?: UsersViewModel(RetrofitRepoImpl())
+            ?: UsersViewModel(applicationContext.app.usersRepo)
 
     private fun init() {
         disposable = viewModel.getUsersData().observeOn(AndroidSchedulers.mainThread()).subscribe {

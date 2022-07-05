@@ -1,4 +1,4 @@
-package ru.gb.thegithubclient.data
+package ru.gb.thegithubclient.data.concreterepo
 
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single

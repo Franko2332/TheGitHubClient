@@ -2,12 +2,11 @@ package ru.gb.thegithubclient.ui.users
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.Subject
-import ru.gb.thegithubclient.data.UsersAppState
+import ru.gb.thegithubclient.domain.appstate.UsersAppState
 import ru.gb.thegithubclient.domain.entity.UserEntity
 import ru.gb.thegithubclient.domain.repo.Repo
 import java.lang.IllegalStateException

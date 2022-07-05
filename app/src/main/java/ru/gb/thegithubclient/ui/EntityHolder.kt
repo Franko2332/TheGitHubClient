@@ -1,8 +1,9 @@
-package ru.gb.thegithubclient.ui.adapters
+package ru.gb.thegithubclient.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import ru.gb.thegithubclient.ui.Adapter
 import ru.gb.thegithubclient.ui.BindableModel
 
 abstract class EntityHolder(parent: ViewGroup, layoutId: Int) : RecyclerView.ViewHolder(

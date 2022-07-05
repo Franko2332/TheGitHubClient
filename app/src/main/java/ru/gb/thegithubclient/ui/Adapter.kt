@@ -1,9 +1,8 @@
-package ru.gb.thegithubclient.ui.adapters
+package ru.gb.thegithubclient.ui
 
 import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ru.gb.thegithubclient.ui.BindableModel
 import ru.gb.thegithubclient.domain.entity.UserEntity
 import ru.gb.thegithubclient.ui.users.GitHubUsersHolder
 

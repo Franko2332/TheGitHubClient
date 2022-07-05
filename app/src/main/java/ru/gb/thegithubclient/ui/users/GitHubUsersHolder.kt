@@ -10,8 +10,8 @@ import com.squareup.picasso.Picasso
 import ru.gb.thegithubclient.R
 import ru.gb.thegithubclient.ui.BindableModel
 import ru.gb.thegithubclient.domain.entity.UserEntity
-import ru.gb.thegithubclient.ui.adapters.Adapter
-import ru.gb.thegithubclient.ui.adapters.EntityHolder
+import ru.gb.thegithubclient.ui.Adapter
+import ru.gb.thegithubclient.ui.EntityHolder
 
 class GitHubUsersHolder(parent: ViewGroup, layoutRes: Int) : EntityHolder(parent, layoutRes) {
     var data: UserEntity? = null
