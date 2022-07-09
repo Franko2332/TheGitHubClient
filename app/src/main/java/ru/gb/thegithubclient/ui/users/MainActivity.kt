@@ -1,6 +1,5 @@
 package ru.gb.thegithubclient.ui.users
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -9,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.kotlin.subscribeBy
 import ru.gb.thegithubclient.app
-import ru.gb.thegithubclient.data.concreterepo.RetrofitRepoImpl
 import ru.gb.thegithubclient.domain.appstate.UsersAppState
 import ru.gb.thegithubclient.domain.appstate.UsersAppState.*
 import ru.gb.thegithubclient.databinding.ActivityMainBinding
@@ -22,6 +21,7 @@ class MainActivity : AppCompatActivity(), UsersContract.View, Adapter.OnItemClic
     private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private lateinit var viewModel: UsersViewModel
     private lateinit var disposable: Disposable
+    private lateinit var rxButtonDisposable: Disposable
 
     companion object {
         private const val USER_ENTITY = "USER_ENTITY"
@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity(), UsersContract.View, Adapter.OnItemClic
 
     override fun onDestroy() {
         disposable.dispose()
+        rxButtonDisposable.dispose()
         super.onDestroy()
     }
 
@@ -44,10 +45,13 @@ class MainActivity : AppCompatActivity(), UsersContract.View, Adapter.OnItemClic
             ?: UsersViewModel(applicationContext.app.usersRepo)
 
     private fun init() {
+        val rxFab = binding.fab
         disposable = viewModel.getUsersData().observeOn(AndroidSchedulers.mainThread()).subscribe {
             render(it)
         }
-
+        rxButtonDisposable =rxFab.clickEventObservable.subscribeBy(
+            onError = { showError(it) },
+            onNext = { viewModel.getUsersData() })
     }
 
     override fun onRetainCustomNonConfigurationInstance(): UsersViewModel? {
