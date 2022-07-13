@@ -7,6 +7,7 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.Subject
 import ru.gb.thegithubclient.domain.appstate.UsersAppState
+import ru.gb.thegithubclient.domain.entity.UserBindableEntity
 import ru.gb.thegithubclient.domain.entity.UserEntity
 import ru.gb.thegithubclient.domain.repo.Repo
 import java.lang.IllegalStateException

@@ -1,4 +1,4 @@
-package ru.gb.thegithubclient.ui.users
+package ru.gb.thegithubclient.domain.entity
 
 import ru.gb.thegithubclient.R
 import ru.gb.thegithubclient.ui.BindableModel
