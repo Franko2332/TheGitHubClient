@@ -1,5 +1,6 @@
 package ru.gb.thegithubclient.ui.users
 
+import ru.gb.thegithubclient.domain.entity.UserBindableEntity
 import ru.gb.thegithubclient.ui.BindableModel
 import ru.gb.thegithubclient.domain.repo.Repo
 

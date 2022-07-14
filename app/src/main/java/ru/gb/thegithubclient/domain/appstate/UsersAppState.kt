@@ -1,6 +1,6 @@
 package ru.gb.thegithubclient.domain.appstate
 
-import ru.gb.thegithubclient.ui.users.UserBindableEntity
+import ru.gb.thegithubclient.domain.entity.UserBindableEntity
 
 sealed class UsersAppState {
      object Loading: UsersAppState()
