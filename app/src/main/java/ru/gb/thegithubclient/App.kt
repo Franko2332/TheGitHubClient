@@ -2,30 +2,19 @@ package ru.gb.thegithubclient
 
 import android.app.Application
 import android.content.Context
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
-import ru.gb.thegithubclient.data.concreterepo.RetrofitRepoImpl
-import ru.gb.thegithubclient.data.retrofit.GitHubApi
-import ru.gb.thegithubclient.domain.repo.Repo
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.GlobalContext.startKoin
+import ru.gb.thegithubclient.di.appModule
 
-class App : Application() {
-    val usersRepo: Repo by lazy { RetrofitRepoImpl(gitHubApi) }
-    private val baseUrl = "https://api.github.com/"
-    private val gitHubApi: GitHubApi by lazy { retrofit.create(GitHubApi::class.java) }
-    private val retrofit: Retrofit by lazy {
-        Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-            .client(OkHttpClient.Builder().apply {
-                addInterceptor(HttpLoggingInterceptor().apply {
-                    level = HttpLoggingInterceptor.Level.BODY
-                })
-            }.build())
-            .build()
+class App : Application(){
+    override fun onCreate() {
+        super.onCreate()
+        startKoin{
+            androidLogger()
+            androidContext(this@App)
+            modules(appModule)
+        }
     }
 }
 

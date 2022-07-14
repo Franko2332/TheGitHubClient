@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
+import org.koin.android.ext.android.get
+import org.koin.android.ext.android.inject
 import ru.gb.thegithubclient.app
 import ru.gb.thegithubclient.domain.appstate.UsersAppState
 import ru.gb.thegithubclient.domain.appstate.UsersAppState.*
@@ -22,6 +24,7 @@ class MainActivity : AppCompatActivity(), UsersContract.View, Adapter.OnItemClic
     private lateinit var viewModel: UsersViewModel
     private lateinit var disposable: Disposable
     private lateinit var rxButtonDisposable: Disposable
+
 
     companion object {
         private const val USER_ENTITY = "USER_ENTITY"
@@ -42,7 +45,7 @@ class MainActivity : AppCompatActivity(), UsersContract.View, Adapter.OnItemClic
 
     private fun extractViewModel(): UsersViewModel =
         lastCustomNonConfigurationInstance as? UsersViewModel
-            ?: UsersViewModel(applicationContext.app.usersRepo)
+            ?: UsersViewModel(get())
 
     private fun init() {
         val rxFab = binding.fab
