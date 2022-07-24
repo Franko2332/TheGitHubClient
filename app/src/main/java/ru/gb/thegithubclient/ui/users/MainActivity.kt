@@ -9,17 +9,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
-import org.koin.android.ext.android.get
-import org.koin.android.ext.android.inject
-import ru.gb.thegithubclient.app
+import ru.gb.dil.Di
 import ru.gb.thegithubclient.domain.appstate.UsersAppState
 import ru.gb.thegithubclient.domain.appstate.UsersAppState.*
 import ru.gb.thegithubclient.databinding.ActivityMainBinding
 import ru.gb.thegithubclient.ui.BindableModel
 import ru.gb.thegithubclient.domain.entity.UserEntity
-import ru.gb.thegithubclient.domain.repo.Repo
 import ru.gb.thegithubclient.ui.Adapter
-import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), UsersContract.View, Adapter.OnItemClickListener {
     private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
@@ -27,8 +23,7 @@ class MainActivity : AppCompatActivity(), UsersContract.View, Adapter.OnItemClic
     private lateinit var disposable: Disposable
     private lateinit var rxButtonDisposable: Disposable
 
-    @Inject
-    lateinit var repo: Repo
+
 
     companion object {
         private const val USER_ENTITY = "USER_ENTITY"
@@ -37,7 +32,6 @@ class MainActivity : AppCompatActivity(), UsersContract.View, Adapter.OnItemClic
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        app.appComponent.inject(this)
         viewModel = extractViewModel()
         init()
 
@@ -51,7 +45,7 @@ class MainActivity : AppCompatActivity(), UsersContract.View, Adapter.OnItemClic
 
     private fun extractViewModel(): UsersViewModel =
         lastCustomNonConfigurationInstance as? UsersViewModel
-            ?: UsersViewModel(repo)
+            ?: UsersViewModel(Di.get())
 
     private fun init() {
         val rxFab = binding.fab
