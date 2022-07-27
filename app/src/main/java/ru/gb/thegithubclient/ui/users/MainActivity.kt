@@ -15,6 +15,7 @@ import ru.gb.thegithubclient.domain.appstate.UsersAppState.*
 import ru.gb.thegithubclient.databinding.ActivityMainBinding
 import ru.gb.thegithubclient.ui.BindableModel
 import ru.gb.thegithubclient.domain.entity.UserEntity
+import ru.gb.thegithubclient.service.CustomIntentService
 import ru.gb.thegithubclient.ui.Adapter
 
 class MainActivity : AppCompatActivity(), UsersContract.View, Adapter.OnItemClickListener {
@@ -22,7 +23,7 @@ class MainActivity : AppCompatActivity(), UsersContract.View, Adapter.OnItemClic
     private lateinit var viewModel: UsersViewModel
     private lateinit var disposable: Disposable
     private lateinit var rxButtonDisposable: Disposable
-
+    private lateinit var intent_: Intent
 
 
     companion object {
@@ -40,6 +41,7 @@ class MainActivity : AppCompatActivity(), UsersContract.View, Adapter.OnItemClic
     override fun onDestroy() {
         disposable.dispose()
         rxButtonDisposable.dispose()
+        stopService(intent_)
         super.onDestroy()
     }
 
@@ -55,6 +57,9 @@ class MainActivity : AppCompatActivity(), UsersContract.View, Adapter.OnItemClic
         rxButtonDisposable =rxFab.clickEventObservable.subscribeBy(
             onError = { showError(it) },
             onNext = { viewModel.getUsersData() })
+        intent_ = Intent(this, CustomIntentService::class.java).also {
+            startService(it)
+        }
     }
 
     override fun onRetainCustomNonConfigurationInstance(): UsersViewModel? {

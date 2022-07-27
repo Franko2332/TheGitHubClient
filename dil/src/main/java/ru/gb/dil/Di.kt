@@ -4,7 +4,7 @@ import java.lang.IllegalStateException
 import kotlin.reflect.KClass
 
 object Di {
-    val dependencies: MutableMap<KClass<*>, Any> = HashMap<KClass<*>, Any>()
+    val dependencies: MutableMap<KClass<*>, Any> = HashMap()
 
     inline fun <reified T> add(dependency: T) {
         dependencies[T::class] = dependency!!
